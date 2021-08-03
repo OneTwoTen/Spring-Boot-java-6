@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org/" th:replace="~{/layout/index :: dynamic(~{::main})}">
+
+<body>
+    <main>
+        <div class="card">
+            <img th:src="@{|/assets/images/*{item.image}|}" class="card-img-top" alt="${item.name}"  style="height: 300px;width: 100%;">
+          
+        </div>
+        <h1>[(${item.name})]</h1>
+        <h1>[(${item.createDate})]</h1>
+        <h1>[(${item.category.name})]</h1>
+        Cung Loai
+        <ul>
+            <li th:each="p:${item.category.products}">
+                <a th:href="@{|/product/detail/${p.id}|}">[(${p.name})]</a>
+            </li>
+        </ul>
+    </main>
+</body>
+
+</html>

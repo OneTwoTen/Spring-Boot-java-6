@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+                </li>
+                <th:block th:unless="${#request.remoteUser}">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/security/login/form}">Sign in</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${#request.remoteUser}">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/security/logoff/}">Sign out</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/order/list}">Your order</a>
+                    </li>
+                    <li class="nav-item" th:if="${#request.isUserInRole('DIRE') or #request.isUserInRole('STAF')}">
+                        <a class="nav-link" th:href="@{/admin/home/index}">Admin</a>
+                    </li>
+                </th:block>
+            </ul>
+            <ul class="nav navbar-nav" th:if="${#request.remoteUser}">
+                <li><a href="">[(${#request.remoteUser})]</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

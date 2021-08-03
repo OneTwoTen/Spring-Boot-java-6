@@ -1,0 +1,6 @@
+<div xmlns:th="http://www.thymeleaf.org/">
+    <a th:href="@{/cart/view}">{{cart.count}} items x ${{cart.amount | number:2}}</a>
+    <span class="material-icons" >
+        add_shopping_cart
+      </span>
+</div>
