@@ -29,7 +29,9 @@
             </ul>
             <ul class="nav navbar-nav" th:if="${#request.remoteUser}">
                 <li><a href="">[(${#request.remoteUser})]</a></li>
-            </ul>
+            </ul><div sec:authorize="isAuthenticated()">
+                <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+            </div>
         </div>
     </div>
 </nav>

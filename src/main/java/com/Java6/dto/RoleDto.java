@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class RoleDto {
     private String id;
 	private String name;
-	List<Authority> authorities;
+	// List<Authority> authorities;
 }

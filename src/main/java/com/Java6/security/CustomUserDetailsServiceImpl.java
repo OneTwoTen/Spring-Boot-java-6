@@ -26,6 +26,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
             myUserDetails = new MyUserDetails();
             myUserDetails.setAccount(account);
         }
+        System.out.println("Account: " + myUserDetails.getAccount().getUsername());
         return myUserDetails;
     }
 

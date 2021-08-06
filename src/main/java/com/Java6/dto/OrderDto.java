@@ -14,5 +14,5 @@ public class OrderDto {
 	String address;
 	Date createDate = new Date();
 	AccountDto accountDto;
-	List<OrderDetailDto> orderDetailDtoList; ///
+	// List<OrderDetailDto> orderDetailDtoList; 
 }

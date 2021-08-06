@@ -11,5 +11,7 @@ public interface CategoryService{
 
 	List<Category> findAll();
 	List<CategoryDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize);
-	
+	boolean delete(String id);
+	CategoryDto create(CategoryDto categoryDto);
+	CategoryDto update(CategoryDto categoryDto);
 }

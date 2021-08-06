@@ -18,9 +18,10 @@ public class ProductDto {
 	String name;
 	String image;
 	Double price;
-	
 	Date createDate = new Date();
-	CategoryDto categoryDto;
+	Boolean available;
+	// CategoryDto categoryDto;
+	String categoryId;
 
-	List<OrderDetailDto> orderDetailsDto;
+	// List<OrderDetailDto> orderDetailsDto;
 }

@@ -17,13 +17,13 @@ import com.Java6.service.CategoryService;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-	
+
 	@Autowired
 	CategoryRepository categoryRepository;
 
 	@Autowired
 	private ObjectMapperUtils objectMapper;
-	
+
 	@Override
 	public List<CategoryDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize) {
 		Pageable pageable = PageableUtils.pageableUtils(sortDirection, sortBy, pageIndex, pageSize);
@@ -37,5 +37,29 @@ public class CategoryServiceImpl implements CategoryService {
 		return (List<Category>) categoryRepository.findAll();
 	}
 
+	@Override
+	public boolean delete(String id) {
+		Category category = categoryRepository.getById(id);
+		if (category != null) {
+			categoryRepository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public CategoryDto create(CategoryDto categoryDto) {
+		Category category = objectMapper.convertEntityAndDto(categoryDto, Category.class);
+		categoryRepository.save(category);
+		categoryDto.setId(category.getId());
+		return categoryDto;
+	}
+
+	@Override
+	public CategoryDto update(CategoryDto categoryDto) {
+		Category category = objectMapper.convertEntityAndDto(categoryDto, Category.class);
+		categoryRepository.save(category);
+		return categoryDto;
+	}
 
 }

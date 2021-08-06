@@ -18,12 +18,14 @@ public class SecurityController {
 	@RequestMapping(value = "/security/login/success")
 	public String loginSuccess(Model model) {
 		model.addAttribute("message", "Đăng nhập thành công");
+		System.out.println("success");
 		return "security/login";
 	}
 
 	@RequestMapping(value = "/security/login/error")
 	public String loginError(Model model) {
 		model.addAttribute("message", "Không đúng tài khoản hoặc mật khẩu");
+		System.out.println("false login"); 
 		return "security/login";
 	}
 

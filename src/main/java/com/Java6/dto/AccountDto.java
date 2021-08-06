@@ -18,6 +18,6 @@ public class AccountDto {
 	String fullname;
 	String email;
 	String photo;
-	List<OrderDto> orders;
-	List<AuthorityDto> authoritiesDto;
+	// List<OrderDto> orders;
+	// List<AuthorityDto> authoritiesDto;
 }

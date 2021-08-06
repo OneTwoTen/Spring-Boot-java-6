@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class CategoryDto {
     String id;
 	String name;
-	List<ProductDto> productsDtos;
+	// List<ProductDto> productsDtos;
 }

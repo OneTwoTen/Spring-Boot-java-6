@@ -3,6 +3,9 @@
 
 <body>
     <main>
+      <div th:replace="~{/cart/view :: shopping_cart}">
+
+      </div>
         <div class="row">
             <div class="form-group col-sm-6">
               <label>Purchaser: [[${#request.remoteUser}]]</label>
@@ -11,12 +14,12 @@
               <label for="">Order date</label>
               <div class="form-control">{{order.createDate | date:'dd-MM-yyyy'}}</div>
             </div>
-        </div>
-        <div class="row">
             <div class="form-group">
               <label for="">Shipping address</label>
               <input type="text" name="" id="" class="form-control" placeholder="" ng-model="order.address" required>
             </div>
+        </div>
+        <div class="row">
         </div>
         <button ng-click="order.purchaser()" class="btn btn-primary">Purchaser</button>
     </main>
