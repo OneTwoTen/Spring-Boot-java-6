@@ -3,7 +3,31 @@
 
 <body>
    <main>
-       <h1>Order list</h1>
+     <div class="panel panel-primary">
+         <div class="panel-heading">Your order purchaser</div>
+         <table class="table">
+             <thead>
+                 <tr>
+                     <th>NO.</th>
+                     <th>Order NO.</th>
+                     <th>Order date</th>
+                     <th>Shipping address</th>
+                     <th></th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr th:each="order, state:${orders}">
+                     <td>[(${state.index})]</td>
+                     <td>[(${order.id})]</td>
+                     <td>[(${order.createDate})]</td>
+                     <td>[(${order.address})]</td>
+                    <td>
+                        <a th:href="@{|/order/detail/${order.id}|}" class="btn btn-primary">Order Details</a>
+                    </td>
+                    </tr>
+             </tbody>
+         </table>
+     </div>  
    </main>
 </body>
 

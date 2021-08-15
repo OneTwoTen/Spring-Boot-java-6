@@ -11,7 +11,7 @@ app.controller("shopping-cart-ctrl", function ($scope, $http) {
                 item.qty++;
                 this.saveToLocalStorage();
             } else {
-                $http.get('/rest/products/' + id)
+                $http.get('/rest/products/getOne/' + id)
                     .then(response => {
                         response.data.qty = 1;
                         this.items.push(response.data);
@@ -20,13 +20,13 @@ app.controller("shopping-cart-ctrl", function ($scope, $http) {
             }
         },
 
-        remove(id){
+        remove(id) {
             var index = this.items.findIndex(item => item.id === id)
             this.items.splice(index, 1);
             this.saveToLocalStorage();
         },
         clear() {
-            this.items=[];
+            this.items = [];
             this.saveToLocalStorage();
 
         },
@@ -61,8 +61,32 @@ app.controller("shopping-cart-ctrl", function ($scope, $http) {
     $scope.order = {
         createDate: new Date(),
         address: "",
-        purchase(){
-            alert('Đặt hàng')
+        account: {
+            username: $("#username").text(),
+        },
+        get orderDetails() {
+            return $scope.cart.items.map(item => {
+                return {
+                    product: { id: item.id },
+                    price: item.price,
+                    quantity: item.qty
+                }
+            }
+            )
+        },
+        purchaser() {
+            var order = angular.copy(this)
+            console.log(order);
+            $http.post('/rest/orders/', order)
+                .then(response => {
+                    alert('Đặt hàng thành công');
+                    $scope.cart.clear();
+                    location.href = "/order/detail/" + response.data.id;
+                })
+                .catch(error => {
+                    alert('Đặt hàng lỗi');
+                    console.log(error);
+                })
         }
     }
 })

@@ -78,13 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable();
 
-		http.authorizeRequests().antMatchers("/order/**").authenticated()
+		http.authorizeRequests().antMatchers("/order/**").authenticated().and().authorizeRequests().antMatchers("/assets/admin/**").hasAnyRole("STAF")
 				// .and().authorizeRequests().antMatchers("/rest/category/").hasRole("STAF")
 				.anyRequest()
-				.permitAll()
-		.and().exceptionHandling().and().sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+				.permitAll();
+		// .and().exceptionHandling().and().sessionManagement()
+		// .sessionCreationPolicy(SessionCreationPolicy.NEVER);
+		// http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		http.formLogin().loginPage("/security/login/form").loginProcessingUrl("/security/login")
 				.defaultSuccessUrl("/security/login/success", false).failureUrl("/security/login/error");
 
@@ -92,7 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.exceptionHandling().accessDeniedPage("/security/unauthorized");
 
-		http.logout().logoutUrl("/security/logoff").logoutSuccessUrl("/security/logoff/success")
-				.deleteCookies("JSESSIONID").invalidateHttpSession(true);
+		http.logout().logoutUrl("/security/logoff").logoutSuccessUrl("/security/logoff/success");
 	}
 }

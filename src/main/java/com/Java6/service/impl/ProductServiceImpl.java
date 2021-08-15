@@ -35,12 +35,6 @@ public class ProductServiceImpl implements ProductService{
 		return result;
 	}
 
-	@Override
-	public Product findPro(Integer id) {
-		Product product = productRepo.findById(id).get();
-	
-		return product;
-	}
 
 	@Override
 	public List<Product> findAll() {
@@ -76,7 +70,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ProductDto create(ProductDto cDto) {
 		Product product = objectMapper.convertEntityAndDto(cDto, Product.class);
-		product.setCategory(categoryRepository.findById(cDto.getCategoryId()).get());
+		// product.setCategory(categoryRepository.findById(cDto.getCategory().getId()));
 		productRepo.save(product);
 		System.out.println(cDto);
 		cDto.setId(product.getId());

@@ -1,18 +1,18 @@
 package com.Java6.dto;
 
 import java.util.Date;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.Java6.entity.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-// @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ProductDto {
     Integer id;
 	String name;
@@ -21,7 +21,7 @@ public class ProductDto {
 	Date createDate = new Date();
 	Boolean available;
 	// CategoryDto categoryDto;
-	String categoryId;
-
+	// String categoryId;
+	Category category;
 	// List<OrderDetailDto> orderDetailsDto;
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -29,9 +29,31 @@
             </ul>
             <ul class="nav navbar-nav" th:if="${#request.remoteUser}">
                 <li><a href="">[(${#request.remoteUser})]</a></li>
-            </ul><div sec:authorize="isAuthenticated()">
-                <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-            </div>
+            </ul>
         </div>
     </div>
-</nav>
+</nav> -->
+
+<div xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-inverse" style="font-variant:small-caps;">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/product/list}">Home</a></li>
+                <th:block th:if="${#request.remoteUser}">
+                    <li><a th:href="@{/security/logoff}">Sign Out</a></li>
+                    <li><a th:href="@{/order/list}">Your Orders</a></li>
+                    <li th:if="${#request.isUserInRole('DIRE') or #request.isUserInRole('STAF')}">
+                        <a th:href="@{/admin/home/index}">Administration</a>
+
+                    </li>
+                </th:block>
+                <th:block th:unless="${#request.remoteUser}">
+                    <li><a th:href="@{/security/login/form}">Sign In</a></li>
+                </th:block>
+            </ul>
+            <ul th:if="${#request.remoteUser}" class="nav navbar-nav navbar-right">
+                <li><a href="#">Welcome [[${#request.remoteUser}]]</a>
+            </ul>
+        </div>
+    </nav>
+</div>

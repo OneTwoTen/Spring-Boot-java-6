@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HomeController {
+public class HomeRestController {
 
     // @Autowired
     // private CustomUserDetailsServiceImpl userDetailsService;
@@ -37,10 +37,10 @@ public class HomeController {
 	private AuthenticationManager authenticationManager;
     @Autowired
     private AuthorityService authorityService;
-    @GetMapping(value = "/")
-    public String home() {
-        return "hello world";
-    }
+    // @GetMapping(value = "/")
+    // public String home() {
+    //     return "hello world";
+    // }
 
     @PostMapping(value = "/authenticate")
     public JwtResponse authenticate(@RequestBody Account jwtRequest) throws Exception {

@@ -19,7 +19,6 @@ import java.util.List;
 import com.Java6.JPA.ProductRepository;
 import com.Java6.Util.ObjectMapperUtils;
 import com.Java6.dto.ProductDto;
-import com.Java6.entity.Product;
 import com.Java6.service.ProductService;
 
 @CrossOrigin("*")
@@ -33,7 +32,7 @@ public class ProductRestController {
 	@Autowired
 	ProductRepository productRepository;
 	@Autowired
-	private ObjectMapperUtils objectMapper;
+	private ObjectMapperUtils objectMapperUtils;
 	// @GetMapping(value = "{id}")
 	// public Product getOne(@PathVariable("id") String id) {
 	// return productService.findById(Integer.parseInt(id));
@@ -55,14 +54,7 @@ public class ProductRestController {
 	@GetMapping(value = "/getOne/{id}", produces = "application/json")
 	public ResponseEntity<ProductDto> getOne(@PathVariable("id") Integer id) {
 		ProductDto productDto = productService.findById(id);
-		System.out.println("pro: " + productDto.getCategoryId());
 		return ResponseEntity.ok(productDto);
-	}
-
-	@GetMapping(value = "/get/{id}", produces = "application/json")
-	public ResponseEntity<Product> get(@PathVariable("id") Integer id) {
-		Product product = productService.findPro(id);
-		return ResponseEntity.ok(product);
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
@@ -79,14 +71,14 @@ public class ProductRestController {
 	@PostMapping(value = "create")
 	public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto
 			) {
-		// if (productDto.getId() != null) {
-		// 	return ResponseEntity.ok(productService.update(productDto, categoryId));
-		// }
+		if (productDto.getId() != null) {
+			return ResponseEntity.ok(productService.update(productDto));
+		}
 		return ResponseEntity.ok(productService.create(productDto));
 	}
 
 	@PutMapping(value = "update/{id}")
-	public ResponseEntity<ProductDto> update(ProductDto productDto, @PathVariable("id") Integer id,
+	public ResponseEntity<ProductDto> update(@RequestBody ProductDto productDto, @PathVariable("id") Integer id,
 			@RequestParam(value = "categoryId") String categoryId) {
 		if (id != null)
 			return ResponseEntity.ok(productService.update(productDto, categoryId));
