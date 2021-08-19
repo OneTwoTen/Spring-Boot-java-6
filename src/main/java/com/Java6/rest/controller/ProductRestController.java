@@ -1,6 +1,7 @@
 package com.Java6.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import com.Java6.JPA.ProductRepository;
 import com.Java6.Util.ObjectMapperUtils;
+import com.Java6.dto.PageDto;
 import com.Java6.dto.ProductDto;
 import com.Java6.service.ProductService;
 
@@ -38,18 +40,20 @@ public class ProductRestController {
 	// return productService.findById(Integer.parseInt(id));
 	// }
 
-	@GetMapping(value="")
-    public ResponseEntity<List<ProductDto>> getCategory(
-        @RequestParam(defaultValue="0") Integer pageIndex,
-        @RequestParam(defaultValue="5") Integer pageSize,
-        @RequestParam(defaultValue="id") String sortBy,
-        @RequestParam(defaultValue="ASC") String sortDirection
-    ){
-        List<ProductDto> list = productService.findAll(sortDirection, sortBy, pageIndex, pageSize);
-        if(list.isEmpty())
-        return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(list);
-    }
+	@GetMapping(value = "")
+	public ResponseEntity<List<ProductDto>> getCategory(@RequestParam(defaultValue = "0") Integer pageIndex,
+			@RequestParam(defaultValue = "5") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "ASC") String sortDirection) {
+		HttpHeaders headers = new HttpHeaders();
+		Integer pageTotal = (productRepository.getTotalProductCount() % pageSize) == 0
+				? ((productRepository.getTotalProductCount() / pageSize) - 1)
+				: ((productRepository.getTotalProductCount() / pageSize));
+		List<ProductDto> list = productService.findAll(sortDirection, sortBy, pageIndex, pageSize);
+		headers.add("boolean", pageTotal.toString());
+		if (list.isEmpty())
+			return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().headers(headers).body(list);
+	}
 
 	@GetMapping(value = "/getOne/{id}", produces = "application/json")
 	public ResponseEntity<ProductDto> getOne(@PathVariable("id") Integer id) {
@@ -69,8 +73,7 @@ public class ProductRestController {
 	}
 
 	@PostMapping(value = "create")
-	public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto
-			) {
+	public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto) {
 		if (productDto.getId() != null) {
 			return ResponseEntity.ok(productService.update(productDto));
 		}

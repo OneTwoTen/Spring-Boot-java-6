@@ -16,8 +16,7 @@ import com.Java6.entity.Product;
 import com.Java6.service.ProductService;
 
 @Service
-public class ProductServiceImpl implements ProductService{
-
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductRepository productRepo;
@@ -25,26 +24,33 @@ public class ProductServiceImpl implements ProductService{
 	CategoryRepository categoryRepository;
 	@Autowired
 	private ObjectMapperUtils objectMapper;
+
 	@Override
 	public ProductDto findById(Integer id) {
-		Product product =productRepo.findById(id).get();
+		Product product = productRepo.findById(id).get();
 		product.setCategory(categoryRepository.getById(product.getCategory().getId()));
 		ProductDto result = objectMapper.convertEntityAndDto(product, ProductDto.class);
-		// CategoryDto categoryDto = objectMapper.convertEntityAndDto(product.getCategory(), CategoryDto.class);
+		// CategoryDto categoryDto =
+		// objectMapper.convertEntityAndDto(product.getCategory(), CategoryDto.class);
 		// result.setCategoryDto(categoryDto);
 		return result;
 	}
 
+	public Integer getTotalProductCount() {
+		return productRepo.getTotalProductCount();
+	}
 
 	@Override
 	public List<Product> findAll() {
-		
+
 		return productRepo.findAll();
 	}
+
 	@Override
 	public List<Product> findByCategoryId(String cid) {
 		return productRepo.findByCategoryId(cid);
 	}
+
 	@Override
 	public List<ProductDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize) {
 		Pageable pageable = PageableUtils.pageableUtils(sortDirection, sortBy, pageIndex, pageSize);
@@ -52,21 +58,23 @@ public class ProductServiceImpl implements ProductService{
 		List<ProductDto> listdDto = objectMapper.mapAll(list, ProductDto.class);
 		return listdDto;
 	}
+
 	@Override
 	public boolean delete(Integer id) {
-		Product product= productRepo.getById(id);
+		Product product = productRepo.getById(id);
 		if (product != null) {
 			productRepo.deleteById(id);
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean delete(String id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	@Override
 	public ProductDto create(ProductDto cDto) {
 		Product product = objectMapper.convertEntityAndDto(cDto, Product.class);
@@ -77,6 +85,7 @@ public class ProductServiceImpl implements ProductService{
 		System.out.println(cDto);
 		return cDto;
 	}
+
 	@Override
 	public ProductDto update(ProductDto cDto) {
 		// TODO Auto-generated method stub
@@ -85,20 +94,19 @@ public class ProductServiceImpl implements ProductService{
 	// @Override
 	// public ProductDto create(ProductDto cDto, String categoryId) {
 
-	// 	Product product = objectMapper.convertEntityAndDto(cDto, Product.class);
-	// 	product.setCategory(categoryRepository.getById(categoryId));
-	// 	productRepo.save(product);
-	// 	cDto.setId(product.getId());
-	// 	return cDto;
+	// Product product = objectMapper.convertEntityAndDto(cDto, Product.class);
+	// product.setCategory(categoryRepository.getById(categoryId));
+	// productRepo.save(product);
+	// cDto.setId(product.getId());
+	// return cDto;
 	// }
 	@Override
 	public ProductDto update(ProductDto cDto, String categoryId) {
-		
+
 		Product product = objectMapper.convertEntityAndDto(cDto, Product.class);
 		product.setCategory(categoryRepository.findById(categoryId).get());
 		productRepo.save(product);
 		return cDto;
 	}
-
 
 }

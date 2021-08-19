@@ -1,5 +1,9 @@
 package com.Java6.JPA;
 
-public class RoleRepository {
+import com.Java6.entity.Role;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
     
 }

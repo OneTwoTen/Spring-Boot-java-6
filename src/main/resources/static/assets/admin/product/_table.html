@@ -31,20 +31,20 @@
             </tr>
         </tbody>
     </table>
-	<div class="panel-footer text-center">
-		<button ng-click="pager.first()" type="button" class="btn btn-danger">
-			<b class="glyphicon glyphicon-hand-up"></b>
-		</button>
-		<button ng-click="pager.prev()" type="button" class="btn btn-primary">
-			<b class="glyphicon glyphicon-hand-left"></b>
-		</button>
-		<button ng-click="" type="button" class="btn btn-success">
-			{{pager.page + 1}} of {{pager.count}}</button>
-		<button ng-click="pager.next()" type="button" class="btn btn-primary">
-			<b class="glyphicon glyphicon-hand-right"></b>
-		</button>
-		<button ng-click="pager.last()" type="button" class="btn btn-danger">
-			<b class="glyphicon glyphicon-hand-down"></b>
-		</button>
-	</div>
+    <div class="panel-footer text-center">
+        <button ng-disabled="btn.first" ng-click="pager.first()" type="button" class="btn btn-danger">
+            <b class="glyphicon glyphicon-hand-up">First</b>
+        </button>
+        <button ng-disabled="btn.prev" ng-click="pager.prev()" type="button" class="btn btn-primary">
+            <b class="glyphicon glyphicon-hand-left">Previous</b>
+        </button>
+        <button ng-click="" type="button" class="btn btn-success">
+            {{page.pageIndex-1}} of {{page.pageTotal}}</button>
+        <button ng-disabled="btn.next" ng-click="pager.next()" type="button" class="btn btn-primary">
+            <b class="glyphicon glyphicon-hand-right">Next</b>
+        </button>
+        <button ng-disabled="btn.last" ng-click="pager.last()" type="button" class="btn btn-danger">
+            <b class="glyphicon glyphicon-hand-down">Last</b>
+        </button>
+    </div>
 </div>

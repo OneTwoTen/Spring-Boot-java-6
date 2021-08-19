@@ -83,4 +83,10 @@ public class AccountServiceImpl implements AccountService {
 		return cDto;
 	}
 
+	@Override
+	public List<Account> getAdministrators() {
+		// TODO Auto-generated method stub
+		return accountRepo.getAdministrators();
+	}
+
 }
