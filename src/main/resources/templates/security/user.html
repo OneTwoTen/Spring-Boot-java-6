@@ -1,0 +1,29 @@
+<div xmlns:th="http://www.thymeleaf.org/" th:replace="~{/layout/index :: dynamic(~{::main})}">
+    <main>
+        <form th:action="@{/user/}" method="post" class="col-sm-8 col-sm-offset-2">
+            <form>
+                <h1>User</h1>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" name="username" th:value="${account.username}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        th:value="${account.password}">
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full name</label>
+                    <input type="fullname" class="form-control" id="fullname" name="fullname"
+                        th:value="${account.fullname}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" th:value="${account.email}">
+                </div>
+                <i class="fa fa-exclamation" th:text="${message}"></i>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </form>
+    </main>
+</div>
