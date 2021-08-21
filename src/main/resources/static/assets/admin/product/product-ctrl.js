@@ -29,7 +29,14 @@ app.controller("product-ctrl", function ($scope, $http) {
                 $scope.categories = response.data;
                 console.log(response.data);
             })
-        $scope.page.pageIndex = 1;
+        $scope.page.pageIndex = 0;
+        if ($scope.page.pageIndex <= 0) {
+            return $scope.btn.prev = true;
+        }
+        // if ($scope.page.pageIndex ==0) {
+        //     return $scope.btn.first = true;
+        // }
+        return $scope.btn.prev = false;
     }
 
     $scope.initialize();
@@ -39,25 +46,29 @@ app.controller("product-ctrl", function ($scope, $http) {
             var params = $scope.page.pageIndex++;
             $http.get("/rest/products/", { params: { "pageIndex": params } })
                 .then(response => {
+                    $scope.btn.prev = false;
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
                         item.createDate = new Date(item.createDate)
                         if (params == parseInt(response.headers("boolean"))) {
-                            console.log(true)
                             return $scope.btn.next = true;
                         }
                     });
                 });
         },
         prev() {
-            let params = $scope.page.pageIndex--;
+            let params;
+            if ($scope.page.pageIndex > 0)
+                params = $scope.page.pageIndex--;
+            if (params == 0) {
+                return $scope.btn.prev = true;
+            }
             $http.get("/rest/products/", { params: { "pageIndex": params } })
                 .then(response => {
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
                         item.createDate = new Date(item.createDate)
                         if (params == 0) {
-                            console.log(true)
                             return $scope.btn.prev = true;
                         }
                     });
@@ -78,6 +89,7 @@ app.controller("product-ctrl", function ($scope, $http) {
                 });
         },
         last() {
+            $scope.btn.prev = false;
             let params = $scope.page.pageTotal;
             $http.get("/rest/products/", { params: { "pageIndex": params } })
                 .then(response => {

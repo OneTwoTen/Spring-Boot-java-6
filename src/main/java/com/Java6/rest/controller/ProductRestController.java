@@ -42,7 +42,7 @@ public class ProductRestController {
 
 	@GetMapping(value = "")
 	public ResponseEntity<List<ProductDto>> getCategory(@RequestParam(defaultValue = "0") Integer pageIndex,
-			@RequestParam(defaultValue = "5") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "ASC") String sortDirection) {
 		HttpHeaders headers = new HttpHeaders();
 		Integer pageTotal = (productRepository.getTotalProductCount() % pageSize) == 0
@@ -87,4 +87,5 @@ public class ProductRestController {
 			return ResponseEntity.ok(productService.update(productDto, categoryId));
 		return ResponseEntity.badRequest().build();
 	}
+
 }
