@@ -52,9 +52,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize) {
+	public List<ProductDto> findAll(String name, String sortDirection, String sortBy, int pageIndex, int pageSize) {
 		Pageable pageable = PageableUtils.pageableUtils(sortDirection, sortBy, pageIndex, pageSize);
-		List<Product> list = productRepo.findAll(pageable).getContent();
+		List<Product> list = productRepo.findAll("%" + name + "%", pageable);
 		List<ProductDto> listdDto = objectMapper.mapAll(list, ProductDto.class);
 		return listdDto;
 	}
@@ -107,6 +107,12 @@ public class ProductServiceImpl implements ProductService {
 		product.setCategory(categoryRepository.findById(categoryId).get());
 		productRepo.save(product);
 		return cDto;
+	}
+
+	@Override
+	public List<ProductDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

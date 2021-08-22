@@ -9,7 +9,7 @@ public interface ProductService extends BaseService<Product, ProductDto> {
 
 	List<Product> findAll();
 
-	List<ProductDto> findAll(String sortDirection, String sortBy, int pageIndex, int pageSize);
+	List<ProductDto> findAll(String name, String sortDirection, String sortBy, int pageIndex, int pageSize);
 	
 	ProductDto findById(Integer id);
 
