@@ -5,7 +5,11 @@ app.controller("product-ctrl", function ($scope, $http) {
     $scope.tab = {};
     $scope.page = {
         pageIndex: 0,
-        pageTotal: 0
+        pageTotal: 0,
+        searchText: "",
+        sortBy: "id",
+        sortDirection: "asc",
+        pageSize: "10",
     };
     $scope.btn = {
         next: false,
@@ -14,7 +18,6 @@ app.controller("product-ctrl", function ($scope, $http) {
         first: false,
     }
     $scope.initialize = function () {
-        //! load products
         $http.get("/rest/products/")
             .then(response => {
                 $scope.items = response.data;
@@ -42,28 +45,39 @@ app.controller("product-ctrl", function ($scope, $http) {
     $scope.initialize();
 
     $scope.pager = {
+
         next() {
-            var params = $scope.page.pageIndex++;
-            $http.get("/rest/products/", { params: { "pageIndex": params } })
+            var pageIndex = $scope.page.pageIndex++;
+            $http.get("/rest/products/", {
+                params: {
+                    "pageIndex": pageIndex, "name": $scope.page.searchText, "sortBy": $scope.page.sortBy,
+                    "sortDirection": $scope.page.sortDirection, "pageSize": $scope.page.pageSize
+                }
+            })
                 .then(response => {
                     $scope.btn.prev = false;
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
                         item.createDate = new Date(item.createDate)
-                        if (params == parseInt(response.headers("boolean"))) {
+                        if (pageIndex == parseInt(response.headers("boolean"))) {
                             return $scope.btn.next = true;
                         }
                     });
                 });
         },
         prev() {
-            let params;
+            let pageIndex;
             if ($scope.page.pageIndex > 0)
-                params = $scope.page.pageIndex--;
-            if (params == 0) {
+                pageIndex = $scope.page.pageIndex--;
+            if (pageIndex == 0) {
                 return $scope.btn.prev = true;
             }
-            $http.get("/rest/products/", { params: { "pageIndex": params } })
+            $http.get("/rest/products/", {
+                params: {
+                    "pageIndex": pageIndex, "name": $scope.page.searchText, "sortBy": $scope.page.sortBy,
+                    "sortDirection": $scope.page.sortDirection, "pageSize": $scope.page.pageSize
+                }
+            })
                 .then(response => {
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
@@ -75,13 +89,18 @@ app.controller("product-ctrl", function ($scope, $http) {
                 });
         },
         first() {
-            let params = 0;
-            $http.get("/rest/products/", { params: { "pageIndex": params } })
+            let pageIndex = 0;
+            $http.get("/rest/products/", {
+                params: {
+                    "pageIndex": pageIndex, "name": $scope.page.searchText, "sortBy": $scope.page.sortBy,
+                    "sortDirection": $scope.page.sortDirection, "pageSize": $scope.page.pageSize
+                }
+            })
                 .then(response => {
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
                         item.createDate = new Date(item.createDate)
-                        if (params == 0) {
+                        if (pageIndex == 0) {
                             console.log(true)
                             return $scope.btn.first = true;
                         }
@@ -90,13 +109,18 @@ app.controller("product-ctrl", function ($scope, $http) {
         },
         last() {
             $scope.btn.prev = false;
-            let params = $scope.page.pageTotal;
-            $http.get("/rest/products/", { params: { "pageIndex": params } })
+            let pageIndex = $scope.page.pageTotal;
+            $http.get("/rest/products/", {
+                params: {
+                    "pageIndex": pageIndex, "name": $scope.page.searchText, "sortBy": $scope.page.sortBy,
+                    "sortDirection": $scope.page.sortDirection, "pageSize": $scope.page.pageSize
+                }
+            })
                 .then(response => {
                     $scope.items = response.data;
                     $scope.items.forEach(item => {
                         item.createDate = new Date(item.createDate)
-                        if (params == parseInt(response.headers("boolean"))) {
+                        if (pageIndex == parseInt(response.headers("boolean"))) {
                             console.log(true)
                             return $scope.dsblbtn.lastBtn = true;
                         }
@@ -106,6 +130,33 @@ app.controller("product-ctrl", function ($scope, $http) {
     }
     $scope.next = function () {
         alert('next')
+    }
+
+    $scope.openSearch = function (searchText) {
+        $scope.page.searchText = angular.copy(searchText)
+        $http.get("/rest/products/", {
+            params: {
+                "pageIndex": $scope.page.pageIndex, "name": $scope.page.searchText, "sortBy": $scope.page.sortBy,
+                "sortDirection": $scope.page.sortDirection, "pageSize": $scope.page.pageSize
+            }
+        })
+            .then(response => {
+                $scope.items = response.data;
+                $scope.page.pageTotal = response.headers("boolean");
+                if ($scope.items.length == 0) {
+                    alert('Không có sản phẩm cần tìm');
+                    $scope.page.searchText = "";
+                } else {
+                    $scope.items.forEach(item => {
+                        item.createDate = new Date(item.createDate)
+                        // console.log(item);
+                    });
+                }
+                // console.log($scope.items);
+            });
+        console.log($scope.page.searchText);
+        console.log($scope.page.sortBy);
+        console.log($scope.page.sortDirection);
     }
 
     $scope.reset = function () {
@@ -118,7 +169,6 @@ app.controller("product-ctrl", function ($scope, $http) {
 
     $scope.edit = function (item) {
         $scope.form = angular.copy(item);
-        // console.log(this.form);
         $(".nav-tabs a:eq(0)").tab('show');
     }
 
